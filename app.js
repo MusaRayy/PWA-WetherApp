@@ -1,3 +1,79 @@
+// --- Biometric Registration and Login (WebAuthn Simulation) ---
+const authSection = document.getElementById('auth-section');
+const mainSection = document.querySelector('main');
+const registerBtn = document.getElementById('register-btn');
+const loginBtn = document.getElementById('login-btn');
+const authMessage = document.getElementById('auth-message');
+
+// Hide main app until authenticated
+mainSection.style.display = 'none';
+
+let credentialId = null;
+
+// Register (simulate fingerprint registration)
+registerBtn.addEventListener('click', async () => {
+    try {
+        const publicKey = {
+            challenge: new Uint8Array(32),
+            rp: { name: "Weather PWA" },
+            user: {
+                id: new Uint8Array(16),
+                name: "user@example.com",
+                displayName: "Weather User"
+            },
+            pubKeyCredParams: [{ type: "public-key", alg: -7 }],
+            authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
+            timeout: 60000,
+            attestation: "none"
+        };
+        const cred = await navigator.credentials.create({ publicKey });
+        credentialId = cred.rawId;
+        localStorage.setItem('weather-credential', arrayBufferToBase64(credentialId));
+        authMessage.textContent = "Registration successful! Now login.";
+    } catch (e) {
+        authMessage.textContent = "Registration failed or cancelled.";
+    }
+});
+
+// Login (simulate fingerprint authentication)
+loginBtn.addEventListener('click', async () => {
+    try {
+        const storedId = localStorage.getItem('weather-credential');
+        if (!storedId) {
+            authMessage.textContent = "Please register first.";
+            return;
+        }
+        const publicKey = {
+            challenge: new Uint8Array(32),
+            allowCredentials: [{
+                id: base64ToArrayBuffer(storedId),
+                type: "public-key",
+                transports: ["internal"]
+            }],
+            userVerification: "required",
+            timeout: 60000
+        };
+        await navigator.credentials.get({ publicKey });
+        // Success: show app
+        authSection.style.display = 'none';
+        mainSection.style.display = '';
+    } catch (e) {
+        authMessage.textContent = "Authentication failed or cancelled.";
+    }
+});
+
+// Helper functions
+function arrayBufferToBase64(buffer) {
+    return btoa(String.fromCharCode(...new Uint8Array(buffer)));
+}
+function base64ToArrayBuffer(base64) {
+    const binary = atob(base64);
+    const len = binary.length;
+    const buffer = new Uint8Array(len);
+    for (let i = 0; i < len; i++) buffer[i] = binary.charCodeAt(i);
+    return buffer.buffer;
+}
+
 // IndexedDB setup
 const dbPromise = idb.openDB('weather-store', 1, {
     upgrade(db) {
@@ -163,5 +239,6 @@ async function showStoredData() {
 // Register Service Worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('Service Worker Registered'));
+        .then(() => console.log('Service Worker Registered'))
+        .catch(error => console.log('Service Worker Registration Failed:', error));
 }
