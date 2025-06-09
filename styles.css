@@ -19,14 +19,21 @@ main {
     padding: 0 20px;
 }
 
-input, button {
-    padding: 10px;
-    margin: 10px 0;
-    font-size: 16px;
+.input-container {
+    position: relative;
     width: calc(100% - 44px);
+    margin: 10px 0;
+}
+
+input#location-input {
+    padding: 12px 40px 12px 12px; /* Adjust padding to make space for the clear button */
+    width: 100%;
 }
 
 button {
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -35,6 +42,28 @@ button {
 
 button:hover {
     background-color: #45a049;
+}
+
+/* Style for the clear button inside input field */
+button.clear-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: red;
+    font-size: 20px;
+    cursor: pointer;
+    display: none; /* Hidden by default */
+}
+
+input#location-input:focus + .clear-button {
+    display: block; /* Show the clear button when the input is focused */
+}
+
+button.clear-button:hover {
+    color: darkred;
 }
 
 /* Add styles for the install button */
@@ -117,7 +146,7 @@ button#install-button:hover {
 }
 
 /* Styles for install modal */
-.install-modal {
+.install-modal, .history-modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1000; /* Sit on top */
@@ -130,13 +159,13 @@ button#install-button:hover {
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-.install-modal-content {
+.install-modal-content, .history-modal-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
-    max-width: 400px;
+    max-width: 600px;
     text-align: center;
     border-radius: 8px;
 }
@@ -146,6 +175,7 @@ button#install-button:hover {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .close-modal:hover,
@@ -153,6 +183,27 @@ button#install-button:hover {
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+
+/* Styles for history grid view */
+.history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.history-card {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+    text-align: center;
+}
+
+.history-card img {
+    max-height: 100px;
+    margin-bottom: 10px;
 }
 
 @media (max-width: 600px) {
@@ -164,10 +215,8 @@ button#install-button:hover {
         width: calc(100% - 24px);
         font-size: 14px;
     }
-}
 
-
-/* Hide the button initially */
-button#install-button {
-    display: none;
+    .history-modal-content {
+        width: 90%;
+    }
 }

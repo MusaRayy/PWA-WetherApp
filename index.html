@@ -12,7 +12,10 @@
     <h1>Weather PWA</h1>
 </header>
 <main>
+        <div class="input-container">
     <input type="text" id="location-input" placeholder="Enter location">
+            <button id="clear-input-btn" class="clear-button">&times;</button>
+        </div>
     <button id="get-weather-btn">Get Weather</button>
         <div id="progress-bar" class="progress hidden"></div>
     <div id="weather-info"></div>
@@ -27,6 +30,15 @@
             <h2>Install Weather PWA</h2>
             <p>Install this app on your home screen for quick access.</p>
             <button id="install-pwa-btn">Install</button>
+        </div>
+    </div>
+
+    <!-- History grid view popup -->
+    <div id="history-modal" class="history-modal hidden">
+        <div class="history-modal-content">
+            <span id="close-history-modal" class="close-modal">&times;</span>
+            <h2>Weather Data History</h2>
+            <div id="history-grid" class="history-grid"></div>
         </div>
     </div>
 
