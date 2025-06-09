@@ -9,20 +9,29 @@ const dbPromise = idb.openDB('weather-store', 1, {
 
 // Capture the beforeinstallprompt event
 let deferredPrompt;
-const installButton = document.createElement('button');
-installButton.id = 'install-button';
-installButton.innerText = 'Install';
-installButton.style.display = 'none';  // Initially hidden
-document.body.appendChild(installButton);
+const installModal = document.getElementById('install-modal');
+const installButton = document.getElementById('install-pwa-btn');
+const closeModal = document.getElementById('close-modal');
 
-// Listen for the beforeinstallprompt event
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    installButton.style.display = 'block';
+    installModal.style.display = 'block'; // Show the install modal
+});
+
+// Close the modal
+closeModal.addEventListener('click', () => {
+    installModal.style.display = 'none';
+});
+
+window.addEventListener('click', (e) => {
+    if (e.target === installModal) {
+        installModal.style.display = 'none';
+    }
+});
 
     installButton.addEventListener('click', () => {
-        installButton.style.display = 'none';
+    installModal.style.display = 'none';
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
             if (choiceResult.outcome === 'accepted') {
@@ -33,7 +42,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
             deferredPrompt = null;
         });
     });
-});
 
 // Weather application logic
 document.getElementById('get-weather-btn').addEventListener('click', async () => {
@@ -101,6 +109,18 @@ function hideError() {
     const errorMessage = document.getElementById('error-message');
     errorMessage.classList.add('hidden');
     errorMessage.textContent = '';
+}
+
+function showStoredData() {
+    getStoredWeather().then(locations => {
+        if (!locations.length) {
+            alert('No stored weather data available.');
+            return;
+        }
+
+        const weatherList = locations.map(location => `${location.name}: ${location.data.current.temp_c}°C, ${location.data.current.condition.text}`).join('\n');
+        alert(weatherList);
+    });
 }
 
 // Register Service Worker

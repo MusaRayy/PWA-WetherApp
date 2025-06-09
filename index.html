@@ -18,6 +18,18 @@
     <div id="weather-info"></div>
         <div id="error-message" class="error hidden"></div>
 </main>
+    <button id="fab" class="fab" onclick="showStoredData()">&#128202;</button>
+
+    <!-- Custom install prompt modal -->
+    <div id="install-modal" class="install-modal hidden">
+        <div class="install-modal-content">
+            <span id="close-modal" class="close-modal">&times;</span>
+            <h2>Install Weather PWA</h2>
+            <p>Install this app on your home screen for quick access.</p>
+            <button id="install-pwa-btn">Install</button>
+        </div>
+    </div>
+
 <script src="https://cdn.jsdelivr.net/npm/idb@5.0.7/build/iife/index-min.js"></script>
 <script src="app.js"></script>
 </body>
