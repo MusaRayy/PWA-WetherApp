@@ -10,15 +10,20 @@ header {
     background-color: #4CAF50;
     color: white;
     padding: 10px;
+    margin-bottom: 20px;
 }
 
 main {
-    margin: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 0 20px;
 }
 
 input, button {
     padding: 10px;
-    margin: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    width: calc(100% - 44px);
 }
 
 button {
@@ -32,6 +37,77 @@ button:hover {
     background-color: #45a049;
 }
 
+/* Add styles for the install button */
+button#install-button {
+    display: none; /* Initially hidden */
+    padding: 15px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button#install-button:hover {
+    background-color: #45a049;
+}
+
 #weather-info {
     margin-top: 20px;
+}
+
+/* Styles for progress bar */
+.progress {
+    width: 70%;
+    margin: 20px auto;
+    height: 5px;
+    background-color: #ccc;
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.progress:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #4CAF50;
+    animation: progress-animation 2s linear infinite;
+}
+
+@keyframes progress-animation {
+    0% { left: -100%; width: 100%; }
+    50% { left: 25%; width: 50%; }
+    100% { left: 100%; width: 25%; }
+}
+
+.hidden {
+    display: none;
+}
+
+.error {
+    color: red;
+    margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+    header, main {
+        padding: 10px;
+    }
+
+    input, button {
+        width: calc(100% - 24px);
+        font-size: 14px;
+    }
+}
+
+
+/* Hide the button initially */
+button#install-button {
+    display: none;
 }
