@@ -23,6 +23,10 @@ offline capabilities, and IndexedDB for persistent storage.
 - **Responsive Design:** Mobile and desktop-friendly interface.
 - **Installable:** Can be added to the home screen on both Android and iOS devices.
 
+## Demo Video
+
+![Demo Video](screenshots/demo.webp)
+
 ## Demo Screenshots
 
 ### Home Screen
